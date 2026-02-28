@@ -1,17 +1,18 @@
 /**
  * @file matrix.h
- * @author your name (you@domain.com)
+ * @author Aaron Kyzar
  * @brief Class definition and operator prototypes of the Matrix class. 
  * @version 0.1
- * @date 2024-10-08
+ * @date 2026-02-??
  * 
- * @copyright Copyright (c) 2024
+ * @copyright Copyright (c) 2026
  * 
  */
 
 #ifndef MATRIX_H
 #define MATRIX_H
 #include <iostream>
+#include <iomanip>
 
 class Matrix 
 {

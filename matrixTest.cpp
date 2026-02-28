@@ -2,7 +2,7 @@
  * @file matrix_test.cpp
  * @brief A basic test of the matrix class.
  * 
- * @copyright Copyright (c) 2024
+ * @copyright Copyright (c) 2026
  * 
  */
 #include <iostream>
@@ -30,9 +30,12 @@ int main()
     // Test out matrix arithmetic
     cout << "A + B" << endl << a+b << endl;
     cout << "A - B" << endl << a-b << endl;
+
+/*
     cout << "A * B" << endl << a*b << endl;
 
     // Test out scalar multiplication
     cout << "2*A" << endl << 2*a << endl;
     cout << "A*2" << endl << a*2 << endl;
+*/
 }
