@@ -23,12 +23,13 @@ Matrix::Matrix(unsigned int rows, unsigned int cols)
 
 Matrix::Matrix(const Matrix &rhs)
 {
+    // Reusing operator= to save on writing code
     *this = rhs;
 }
 
 Matrix::~Matrix()
 {
-    for (int i = 0; i < this->n; i++)
+    for (int i = 0; i < this->m; i++)
         delete[] this->ar[i];
     
     delete[] this->ar;
@@ -171,6 +172,7 @@ Matrix operator*(const Matrix& m1, const Matrix& m2)
     {
         for (int j = 0; j < cols2; j++)
         {
+            // This variable will be the sum of all multiplications
             double sum = 0;
 
             for (int n = 0; n < cols1; n++)

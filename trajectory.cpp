@@ -80,19 +80,22 @@ int main() {
 
     // Run the simulation
     for (int i = 0; i < steps; ++i) {
-        // TODO: You need to provide code to implement the physics simulation.
-        // What needs to happen is this:
-        // 1. Update the position of the object based on the current velocity
-        //    and delta time.
-        // 2. Update the velocity based on the gravitational acceleration.
-        // 3. If the current position exceeds the grid height, update the grid
-        //    height to the y coordinate + 1.
-        // YOUR CODE HERE
 
-        // We will be talking about the vector object a little later. If you 
-        // want to read ahead though, I encourage that!
+        // Update position based on velocity and delta time
+        position.at(0,0) += velocity.at(0,0)*deltaTime;
+        position.at(1,0) += velocity.at(1,0)*deltaTime;
+
+        // Update velocity based on gravity and delta time
+        velocity.at(0,0) += gravity.at(0,0)*deltaTime;
+        velocity.at(1,0) += gravity.at(1,0)*deltaTime;
+
+        // Increase grid height if the current y position exceeds it
+        if (position.at(1,0) > double(gridHeight))
+            gridHeight = position.at(1,0) + 1;
+
         // Store the current position
         trajectory.push_back(position);
+        
     }
 
     // Plot the trajectory
