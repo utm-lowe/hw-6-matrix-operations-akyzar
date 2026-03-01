@@ -77,13 +77,13 @@ std::ostream& operator<<(std::ostream& os, const Matrix& m)
     unsigned int cols = m.getCols();
     unsigned int rows = m.getRows();
 
-    for(int j = 0; j < rows; j++)
+    for(int i = 0; i < rows; i++)
     {
-        for(int i = 0; i < cols; i++)
+        for(int j = 0; j < cols; j++)
         {
             os << setw(10) << m.at(i, j);
         }
-        if (j != rows - 1) os << endl;
+        if (i != rows - 1) os << endl;
     }
 
     return os;
@@ -94,9 +94,9 @@ std::istream& operator>>(std::istream& is, Matrix& m)
     unsigned int cols = m.getCols();
     unsigned int rows = m.getRows();
 
-    for(int j = 0; j < rows; j++)
+    for(int i = 0; i < rows; i++)
     {
-        for(int i = 0; i < cols; i++)
+        for(int j = 0; j < cols; j++)
         {
             is >> m.at(i, j);
         }
@@ -107,54 +107,103 @@ std::istream& operator>>(std::istream& is, Matrix& m)
 
 Matrix operator+(const Matrix& m1, const Matrix& m2)
 {
+    // Must have same number of columns and rows in order to add.
     unsigned int cols = m1.getCols();
     if (cols != m2.getCols()) abort();
     
     unsigned int rows = m1.getRows();
     if (rows != m2.getRows()) abort();
 
-    Matrix m3{rows, cols};
+    Matrix output{rows, cols};
 
-    for(int j = 0; j < rows; j++)
+    for (int i = 0; i < rows; i++)
     {
-        for(int i = 0; i < cols; i++)
+        for (int j = 0; j < cols; j++)
         {
-            m3.at(i, j) = m1.at(i, j) + m2.at(i, j);
+            output.at(i, j) = m1.at(i, j) + m2.at(i, j);
         }
     }
 
-    return m3;
+    return output;
 }
 
 Matrix operator-(const Matrix& m1, const Matrix& m2)
 {
+    // Must have same number of columns and rows in order to subtract.
     unsigned int cols = m1.getCols();
     if (cols != m2.getCols()) abort();
 
     unsigned int rows = m1.getRows();
     if (rows != m2.getRows()) abort();
 
-    Matrix m3{2, 2};
+    Matrix output{rows, cols};
 
-    for(int j = 0; j < rows; j++)
+    for (int i = 0; i < rows; i++)
     {
-        for(int i = 0; i < cols; i++)
+        for (int j = 0; j < cols; j++)
         {
-            m3.at(i, j) = m1.at(i, j) - m2.at(i, j);
+            output.at(i, j) = m1.at(i, j) - m2.at(i, j);
         }
     }
 
-    return m3;
+    return output;
 }
 
 Matrix operator*(const Matrix& m1, const Matrix& m2)
 {
-    unsigned int cols = m1.getCols();
-    if (cols != m2.getRows()) abort();
+    unsigned int cols1 = m1.getCols();
+    unsigned int cols2 = m2.getCols();
 
-    unsigned int rows = m1.getRows();
+    unsigned int rows1 = m1.getRows();
+    unsigned int rows2 = m2.getRows();
 
+    // Undefined if m1 doesn't have the same # columns as m2 has rows.
+    if (cols1 != rows2) abort();
 
+    Matrix output{rows2, cols2};
 
+    // m3(i,j) = m1(j,1)*m2(1,i) + m1(i,2)*m2(2,j) + ... + m1(i,n)*m2(n,j)
+    // Where n is the number of columns in the left-hand side matrix,
+    // i is the number of rows in the right-hand side matrix,
+    // and j is the number of columns in the right-hand side matrix.
+    
+    for (int i = 0; i < rows2; i++)
+    {
+        for (int j = 0; j < cols2; j++)
+        {
+            double sum = 0;
+
+            for (int n = 0; n < cols1; n++)
+            {
+                sum += m1.at(j,n) * m2.at(n,i);
+            }
+
+            output.at(i,j) = sum;
+        }
+    }
+
+    return output;
 }
 
+Matrix operator*(double scalar, const Matrix& m)
+{
+    unsigned int cols = m.getCols();
+    unsigned int rows = m.getRows();
+
+    Matrix output{rows, cols};
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            output.at(i,j) = m.at(i,j)*scalar;
+        }
+    }
+
+    return output;
+}
+
+Matrix operator*(const Matrix& m, double scalar)
+{
+    return scalar*m;
+}
