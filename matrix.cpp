@@ -160,14 +160,14 @@ Matrix operator*(const Matrix& m1, const Matrix& m2)
     // Undefined if m1 doesn't have the same # columns as m2 has rows.
     if (cols1 != rows2) abort();
 
-    Matrix output{rows2, cols2};
+    Matrix output{rows1, cols2};
 
-    // m3(i,j) = m1(j,1)*m2(1,i) + m1(i,2)*m2(2,j) + ... + m1(i,n)*m2(n,j)
+    // m3(i,j) = m1(i,1)*m2(1,j) + m1(i,2)*m2(2,j) + ... + m1(i,n)*m2(n,j)
     // Where n is the number of columns in the left-hand side matrix,
-    // i is the number of rows in the right-hand side matrix,
+    // i is the number of rows in the left-hand side matrix,
     // and j is the number of columns in the right-hand side matrix.
     
-    for (int i = 0; i < rows2; i++)
+    for (int i = 0; i < rows1; i++)
     {
         for (int j = 0; j < cols2; j++)
         {
@@ -175,9 +175,8 @@ Matrix operator*(const Matrix& m1, const Matrix& m2)
 
             for (int n = 0; n < cols1; n++)
             {
-                sum += m1.at(j,n) * m2.at(n,i);
+                sum += m1.at(i,n) * m2.at(n,j);
             }
-
             output.at(i,j) = sum;
         }
     }
