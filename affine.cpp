@@ -203,7 +203,7 @@ Matrix transformMenu()
             default:
             case 'D':
                 break;
-        }
+        };
 
     }while(choice != 'D');
 

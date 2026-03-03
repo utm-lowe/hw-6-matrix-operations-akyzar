@@ -84,8 +84,10 @@ std::ostream& operator<<(std::ostream& os, const Matrix& m)
         {
             os << setw(10) << m.at(i, j) << " ";
         }
-        if (i != rows - 1) os << endl;
+        os << endl;
     }
+
+    //os << endl;
 
     return os;
 }
