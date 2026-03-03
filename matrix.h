@@ -2,8 +2,8 @@
  * @file matrix.h
  * @author Aaron Kyzar
  * @brief Class definition and operator prototypes of the Matrix class. 
- * @version 0.1
- * @date 2026-02-??
+ * @version 1.0
+ * @date 2026-03-03
  * 
  * @copyright Copyright (c) 2026
  * 

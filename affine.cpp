@@ -1,10 +1,10 @@
 /**
  * @file affine.cpp
- * @author Bob Lowe
+ * @author Aaron Kyzar
  * @brief Perform affine transformations on 2D points.
- * @version 0.1
+ * @version 1.0
  * 
- * @copyright Copyright (c) 2024
+ * @copyright Copyright (c) 2026
  * 
  */
 #include "matrix.h"
@@ -76,9 +76,7 @@ int main()
     while(cin) {
         Matrix point = getPoint();
 
-        // TODO: Write code to transform the point. This should be a single
-        //       line of code!
-        // YOUR CODE HERE
+        point = transform * point;
 
         // If we have a new point, display it.
         if(cin) {
@@ -92,46 +90,76 @@ int main()
 // build an identity matrix
 Matrix transIdent()
 {
-    // TODO: Build and return a 3x3 identity matrix. The identity matrix
-    //       should look like this:
-    //         1 0 0
-    //         0 1 0
-    //         0 0 1
-    // YOUR CODE HERE
+    Matrix output{3,3};
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (i == j) output.at(i,j) = 1;
+            else        output.at(i,j) = 0;
+        }
+    }
+
+    return output;
 }
 
 
 // build a rotation matrix
 Matrix transRotate(double angle)
 {
-    // TODO: Build and return a rotation matrix. The rotation matrix should
-    //       look like this:
-    //         cos(angle) -sin(angle) 0
-    //         sin(angle)  cos(angle) 0
-    //         0           0          1
-    // YOUR CODE HERE
+    double rotateMatrix[3][3] = {{cos(angle), -sin(angle), 0},
+                                 {sin(angle),  cos(angle), 0},
+                                 {         0,           0, 1}};
+
+    Matrix output{3,3};
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            output.at(i,j) = rotateMatrix[i][j];
+        }
+    }
+
+
+    return output;
 }
 
 // build a scaling matrix
 Matrix transScale(double sx, double sy) 
 {
-    // TODO: Build and return a scaling matrix. The scaling matrix should
-    //       look like this:
-    //         sx 0  0
-    //         0  sy 0
-    //         0  0  1
-    // YOUR CODE HERE
+    double scaleMatrix[3][3] = {{sx, 0, 0},
+                                {0, sy, 0},
+                                {0, 0, 1}};
+
+    Matrix output{3,3};
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            output.at(i,j) = scaleMatrix[i][j];
+        }
+    }
+
+    return output;
 }
 
 // build a translation matrix
 Matrix translate(double tx, double ty) 
 {
-    // TODO: build and return the translation matrix. The translation
-    //       matrix should look like this:
-    //         1 0 tx
-    //         0 1 ty
-    //         0 0 1
-    // YOUR CODE HERE
+    double translateMatrix[3][3] = {{1, 0, tx},
+                                    {0, 1, ty},
+                                    {0, 0, 1}};
+
+    Matrix output{3,3};
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            output.at(i,j) = translateMatrix[i][j];
+        }
+    }
+
+    return output;
 }
 
 // do the transformation menu
@@ -147,14 +175,35 @@ Matrix transformMenu()
         cin >> choice;
         choice = toupper(choice);
 
-        // TODO: Process the choice. I would do this with a handy switch
-        //       statement. Be sure to handle the invalid choice condition!
-        // As you build up the transformation matrix, you will need to
-        // multiply like this:
-        //     result = newTransform * result;
-        // Do a quick google search for "Affine Transformation Matrix" to
-        // get more details
-        // YOUR CODE HERE
+        switch (choice)
+        {
+            case 'T':
+                cout << "Enter the x and y translation: ";
+                cin >> x >> y;
+                result = translate(x,y) * result;
+                break;
+
+            case 'R':
+                cout << "Enter the angle of rotation (degrees): ";
+                cin >> angle;
+                
+                angle *= double(M_PI); // Convert degrees to radians
+                angle /= 180.0;
+
+                result = transRotate(angle) * result;
+                break;
+
+            case 'S':
+                cout << "Enter the x and y scaling factors: ";
+                cin >> x >> y;
+
+                result = transScale(x,y) * result;
+                break;
+
+            default:
+            case 'D':
+                break;
+        }
 
     }while(choice != 'D');
 
@@ -165,11 +214,15 @@ Matrix transformMenu()
 // get the point from the user 
 Matrix getPoint() 
 {
-    // TODO:  Get the x and y coordinate from the user and build a
-    //        3x1 matrix consisting of:
-    //          x
-    //          y
-    //          1
-    // Return your matrix at the end of the function.
-    // YOUR CODE HERE
+    double x, y;
+
+    Matrix output{3,1};
+    cout << "Enter x and y: ";
+    cin >> x >> y;
+
+    output.at(0,0) = x;
+    output.at(1,0) = y;
+    output.at(2,0) = 1;
+
+    return output;
 }

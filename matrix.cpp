@@ -1,9 +1,9 @@
 /**
  * @file matrix.cpp
  * @author Aaron Kyzar
- * @brief 
+ * @brief Implementation of the matrix class
  * @version 1.0
- * @date 2026-02-??
+ * @date 2026-03-03
  * 
  * @copyright Copyright (c) 2026
  * 
@@ -82,7 +82,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& m)
     {
         for(int j = 0; j < cols; j++)
         {
-            os << setw(10) << m.at(i, j);
+            os << setw(10) << m.at(i, j) << " ";
         }
         if (i != rows - 1) os << endl;
     }
@@ -159,7 +159,7 @@ Matrix operator*(const Matrix& m1, const Matrix& m2)
     unsigned int rows2 = m2.getRows();
 
     // Undefined if m1 doesn't have the same # columns as m2 has rows.
-    if (cols1 != rows2) abort();
+    //if (cols1 != rows2) abort();
 
     Matrix output{rows1, cols2};
 
